@@ -1,15 +1,17 @@
 package com.example.controller;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import javax.security.sasl.AuthenticationException;
 
 import com.example.entity.Account;
+import com.example.entity.Message;
 import com.example.service.AccountService;
+import com.example.service.MessageService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.security.sasl.AuthenticationException;
+import java.util.List;
 
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller using Spring. The endpoints you will need can be
@@ -22,21 +24,42 @@ import com.example.service.AccountService;
 public class SocialMediaController {
 
     private final AccountService accountService;
+    private final MessageService messageService;
 
-    public SocialMediaController(AccountService accountService) {
+    @Autowired
+    public SocialMediaController(AccountService accountService, MessageService messageService) {
         this.accountService = accountService;
+        this.messageService = messageService;
     }
 
     @PostMapping("register")
-    public ResponseEntity<String> register(@RequestBody Account account){
-        accountService.register(account);
+    public ResponseEntity<Account> register(@RequestBody Account newAccount){
+        Account account = accountService.register(newAccount);
         return ResponseEntity.status(HttpStatus.OK)
-                .body("User registered successfully");
+                .body(account);
     }
 
     @PostMapping("login")
     public ResponseEntity<Account> login(@RequestBody Account loginAccount) throws AuthenticationException {
         Account account = accountService.login(loginAccount);
         return ResponseEntity.status(HttpStatus.OK).body(account);
+    }
+
+    @PostMapping("messages")
+    public ResponseEntity<Message> createNewMessage(@RequestBody Message newMessage){
+        Message message = messageService.addNewMessage(newMessage);
+        return ResponseEntity.status(HttpStatus.OK).body(message);
+    }
+
+    @GetMapping("messages")
+    public ResponseEntity<List<Message>> retrieveMessages(){
+        List<Message> messages = messageService.retrieveMessages();
+        return ResponseEntity.status(HttpStatus.OK).body(messages);
+    }
+
+    @GetMapping("messages/{messageId}")
+    public ResponseEntity<Message> retrieveMessageById(@PathVariable int messageId){
+        Message message = messageService.retrieveMessageById(messageId);
+        return ResponseEntity.status(HttpStatus.OK).body(message);
     }
 }

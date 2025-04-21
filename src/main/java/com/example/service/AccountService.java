@@ -20,7 +20,7 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
-    public void register(Account newAccount){
+    public Account register(Account newAccount){
         if(newAccount.getUsername() == null || newAccount.getUsername().trim().isEmpty()){
             throw new IllegalArgumentException("Username cannot be empty");
         }
@@ -33,7 +33,7 @@ public class AccountService {
         if(accountRepository.existsByUsername(newAccount.getUsername())){
             throw new UsernameAlreadyExistsException("Username already taken");
         }
-        accountRepository.save(newAccount);
+        return accountRepository.save(newAccount);
     }
 
     public Account login(Account account) throws AuthenticationException {
