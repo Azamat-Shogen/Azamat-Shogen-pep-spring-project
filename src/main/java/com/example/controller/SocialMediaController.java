@@ -1,5 +1,15 @@
 package com.example.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import javax.security.sasl.AuthenticationException;
+
+import com.example.entity.Account;
+import com.example.service.AccountService;
 
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller using Spring. The endpoints you will need can be
@@ -7,6 +17,26 @@ package com.example.controller;
  * where applicable as well as the @ResponseBody and @PathVariable annotations. You should
  * refer to prior mini-project labs and lecture materials for guidance on how a controller may be built.
  */
+@RestController
+@RequestMapping
 public class SocialMediaController {
 
+    private final AccountService accountService;
+
+    public SocialMediaController(AccountService accountService) {
+        this.accountService = accountService;
+    }
+
+    @PostMapping("register")
+    public ResponseEntity<String> register(@RequestBody Account account){
+        accountService.register(account);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body("User registered successfully");
+    }
+
+    @PostMapping("login")
+    public ResponseEntity<Account> login(@RequestBody Account loginAccount) throws AuthenticationException {
+        Account account = accountService.login(loginAccount);
+        return ResponseEntity.status(HttpStatus.OK).body(account);
+    }
 }
