@@ -72,4 +72,14 @@ public class SocialMediaController {
             return ResponseEntity.ok().build(); // empty body
         }
     }
+
+    @PatchMapping("messages/{messageId}")
+    public ResponseEntity<Integer> updateMessageById(@RequestBody Message updatedMessage, @PathVariable Integer messageId){
+        boolean updated = messageService.updateMessageById(updatedMessage, messageId);
+        if(updated){
+            return ResponseEntity.ok(1); // number of rows updated
+        } else {
+            return ResponseEntity.ok().build(); // empty body
+        }
+    }
 }

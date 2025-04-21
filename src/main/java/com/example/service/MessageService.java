@@ -1,6 +1,7 @@
 package com.example.service;
 
 import com.example.entity.Message;
+import com.example.exception.ResourceNotFoundException;
 import com.example.repository.AccountRepository;
 import com.example.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,26 @@ public class MessageService {
             messageRepository.deleteById(messageId);
             return true;
         }
+        return false;
+    }
+
+    public boolean updateMessageById(Message updatedMessage, Integer messageId){
+        Optional<Message> optionalMessage = messageRepository.findById(messageId);
+        
+        if (optionalMessage.isEmpty()){
+            throw new ResourceNotFoundException("Message not found");
+        }
+        if (updatedMessage.getMessageText().isBlank() || updatedMessage.getMessageText().trim().length() > 255){
+            throw new IllegalArgumentException("Invalid message text");
+        }
+       
+        if(optionalMessage.isPresent()){
+            Message message = optionalMessage.get();
+            message.setMessageText(updatedMessage.getMessageText());
+            messageRepository.save(message);
+            return true;
+        }
+
         return false;
     }
 }

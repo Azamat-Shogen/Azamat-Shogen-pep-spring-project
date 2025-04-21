@@ -28,6 +28,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
     }
 
+    // Not found -> 400 status code ( 400 in this scenario. Normally 404 if not found )
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<String> handleResourceNotFound(ResourceNotFoundException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
     // Catch-all fallback -> 500 status code
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGeneric(Exception ex){
