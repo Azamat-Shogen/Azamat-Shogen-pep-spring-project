@@ -58,8 +58,18 @@ public class SocialMediaController {
     }
 
     @GetMapping("messages/{messageId}")
-    public ResponseEntity<Message> retrieveMessageById(@PathVariable int messageId){
+    public ResponseEntity<Message> retrieveMessageById(@PathVariable Integer messageId){
         Message message = messageService.retrieveMessageById(messageId);
         return ResponseEntity.status(HttpStatus.OK).body(message);
+    }
+
+    @DeleteMapping("messages/{messageId}")
+    public ResponseEntity<Integer> deleteMessageById(@PathVariable Integer messageId){
+        boolean deleted = messageService.deleteMessageById(messageId);
+        if (deleted){
+            return ResponseEntity.ok(1); // number of rows deleted
+        } else {
+            return ResponseEntity.ok().build(); // empty body
+        }
     }
 }

@@ -26,7 +26,7 @@ public class MessageService {
         if(newMessage.getMessageText() == null || newMessage.getMessageText().isBlank() || newMessage.getMessageText().trim().length() > 255){
             throw new IllegalArgumentException("Invalid message text");
         }
-        if(newMessage.getPostedBy() == null || !accountRepository.existsByAccountId(newMessage.getPostedBy())){
+        if(newMessage.getPostedBy() == null || !accountRepository.existsById(newMessage.getPostedBy())){
             throw new IllegalArgumentException("Invalid user");
         }
 
@@ -40,5 +40,13 @@ public class MessageService {
     public Message retrieveMessageById(int messageId){
         Optional<Message> message = messageRepository.findById(messageId);
         return message.orElse(null);
+    }
+
+    public boolean deleteMessageById(Integer messageId){
+        if(messageRepository.existsById(messageId)){
+            messageRepository.deleteById(messageId);
+            return true;
+        }
+        return false;
     }
 }
