@@ -4,6 +4,8 @@ package com.example.service;
 import com.example.entity.Account;
 import com.example.exception.UsernameAlreadyExistsException;
 import com.example.repository.AccountRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.security.sasl.AuthenticationException;
@@ -16,6 +18,7 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
 
+    @Autowired
     public AccountService(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
