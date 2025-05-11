@@ -14,10 +14,12 @@ import javax.security.sasl.AuthenticationException;
 import java.util.List;
 
 /**
- * TODO: You will need to write your own endpoints and handlers for your controller using Spring. The endpoints you will need can be
- * found in readme.md as well as the test cases. You be required to use the @GET/POST/PUT/DELETE/etc Mapping annotations
- * where applicable as well as the @ResponseBody and @PathVariable annotations. You should
- * refer to prior mini-project labs and lecture materials for guidance on how a controller may be built.
+ * Handles API endpoints for user registration, login, message creation, retrieval, update, and deletion.
+ * Utilizes Spring's @RestController for handling incoming web requests and @RequestMapping for mapping
+ * specific URL paths to handler methods. Leverages @PostMapping, @GetMapping, @DeleteMapping, and
+ * @PatchMapping for different HTTP methods. Extracts path variables using @PathVariable and request
+ * body data using @RequestBody. Returns responses with appropriate HTTP status codes using
+ * ResponseEntity. Autowires AccountService and MessageService to handle the business logic.
  */
 @RestController
 @RequestMapping
